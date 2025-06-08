@@ -1,5 +1,6 @@
 import os
 from colorama import init, Fore, Style, Back
+from polytech import raquem 
 
 init(autoreset=True)
 
@@ -9,7 +10,7 @@ DISPLAY_WIDTH = 28
 MENU_TITLE = "Polytech Menu System"
 
 MENU_OPTIONS = {
-    1: "Option 1",
+    1: "Annie Rose S. Raquem",
     2: "Option 2",
     3: "Option 3", 
     4: "Option 4",
@@ -88,10 +89,12 @@ def handle_invalid_choice():
     )
 
 def display_get_choice(choice):
+    if 1 <= choice <= 5:
+        clear_screen()
+        
     match choice:
         case 1:
-            # TODO(Raquem) Put your module here.
-            pass
+            raquem.Pet.menu()
         case 2:
             # TODO(Victorio) Put your module here.
             pass
