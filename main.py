@@ -1,15 +1,16 @@
 import os
 from colorama import init, Fore, Style, Back
+from polytech import raquem 
 
 init(autoreset=True)
 
 EXIT_OPTION = 6
 UNSET_OPTION = -1
 DISPLAY_WIDTH = 28
-MENU_TITLE = "Polytech Menu System"
+MENU_TITLE = "PolyTech Menu System"
 
 MENU_OPTIONS = {
-    1: "Option 1",
+    1: "Annie Rose S. Raquem",
     2: "Option 2",
     3: "Option 3", 
     4: "Option 4",
@@ -29,7 +30,7 @@ def center_text(text, width):
     
     return ' ' * left_padding + text + ' ' * right_padding
 
-def header():
+def display_header():
     print(Back.YELLOW + " " * DISPLAY_WIDTH)
     
     centered_title = center_text(MENU_TITLE, DISPLAY_WIDTH - 2)
@@ -45,7 +46,7 @@ def header():
     print(Back.YELLOW + " " * DISPLAY_WIDTH)
 
 def display_menu():
-    header()
+    display_header()
     
     for key in sorted(MENU_OPTIONS):
         menu_text = f"{key}. {MENU_OPTIONS[key]}"
@@ -88,10 +89,12 @@ def handle_invalid_choice():
     )
 
 def display_get_choice(choice):
+    if 1 <= choice <= 5:
+        clear_screen()
+        
     match choice:
         case 1:
-            # TODO(Raquem) Put your module here.
-            pass
+            raquem.Pet.menu()
         case 2:
             # TODO(Victorio) Put your module here.
             pass
