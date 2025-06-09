@@ -39,6 +39,19 @@ class MentalHealthTracker:
         for i, entry in enumerate(self.journal_entries, 1):
             print(f"{i}. {entry}")
 
+    def clear_entries(self):
+        print(Fore.MAGENTA + "=" * 55)
+        print(" \tClear All Journal Entries")
+        print(Fore.MAGENTA + "=" * 55)
+        confirm = input(Fore.RED + "Are you sure you want to "
+                "clear all journal entries? (yes/no): ")
+        if confirm.lower() != "yes":
+            print(Fore.YELLOW + "Operation Canelled.")
+            return
+
+        self.journal_entries.clear()
+        print(Fore.GREEN + "All journal entries cleared.")
+
 tracker = MentalHealthTracker()
 
 def clear_screen():
@@ -66,7 +79,7 @@ def process_choice(choice):
         case 3:
             tracker.view_entries()
         case 4:
-            pass
+            tracker.clear_entries()
         case 5:
             pass
         case _:
