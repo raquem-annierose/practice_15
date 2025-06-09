@@ -11,6 +11,15 @@ class MentalHealthTracker:
         self.mood = "Neutral"
         self.journal_entries = []
 
+    def log_mood(self):
+        print(Fore.MAGENTA + "=" * 55)
+        print(" \t\tLog your current Mood")
+        print(Fore.MAGENTA + "=" * 55)
+        mood = input("How are you feeling today?"
+                     " (e.g., Happy, Sad, Anxious): ")
+        self.mood = mood
+        print(Fore.GREEN + f"Mood updated to: {self.mood}")
+
 tracker = MentalHealthTracker()
 
 def clear_screen():
@@ -32,7 +41,7 @@ def process_choice(choice):
     clear_screen()
     match choice:
         case 1:
-            pass
+            tracker.log_mood()
         case 2:
             pass
         case 3:
