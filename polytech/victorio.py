@@ -11,6 +11,8 @@ class MentalHealthTracker:
         self.mood = "Neutral"
         self.journal_entries = []
 
+tracker = MentalHealthTracker()
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
