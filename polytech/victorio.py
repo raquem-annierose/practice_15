@@ -52,6 +52,14 @@ class MentalHealthTracker:
         self.journal_entries.clear()
         print(Fore.GREEN + "All journal entries cleared.")
 
+    def show_Summary(self):
+        print(Fore.MAGENTA + "=" * 55)
+        print(" \tVictorio's Mental Health Summary ")
+        print(Fore.MAGENTA + "=" * 55)
+        print(f"Username:                   {self.username}")
+        print(f"Current Mood:               {self.mood}")
+        print(f"Total Journal Entries:      {len(self.journal_entries)}")
+
 tracker = MentalHealthTracker()
 
 def clear_screen():
@@ -81,7 +89,7 @@ def process_choice(choice):
         case 4:
             tracker.clear_entries()
         case 5:
-            pass
+            tracker.show_Summary()
         case _:
             print(Fore.RED + "Invalid choice. Try again.")
     input("\nPress Enter to Continue...")
