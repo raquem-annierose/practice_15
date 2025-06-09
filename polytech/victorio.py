@@ -20,6 +20,14 @@ class MentalHealthTracker:
         self.mood = mood
         print(Fore.GREEN + f"Mood updated to: {self.mood}")
 
+    def add_journal_entry(self):
+        print(Fore.MAGENTA + "=" * 55)
+        print(" \t\tAdd Journal Entry")
+        print(Fore.MAGENTA + "=" * 55)
+        entry = input("Write your journal entry: ")
+        self.journal_entries.append(entry)
+        print(Fore.GREEN + "Journal entry added.")
+
 tracker = MentalHealthTracker()
 
 def clear_screen():
@@ -43,7 +51,7 @@ def process_choice(choice):
         case 1:
             tracker.log_mood()
         case 2:
-            pass
+            tracker.add_journal_entry()
         case 3:
             pass
         case 4:
