@@ -28,6 +28,17 @@ class MentalHealthTracker:
         self.journal_entries.append(entry)
         print(Fore.GREEN + "Journal entry added.")
 
+    def view_entries(self):
+        print(Fore.MAGENTA + "=" * 55)
+        print(" \t\tView Journal Entries")
+        print(Fore.MAGENTA + "=" * 55)
+        if not self.journal_entries:
+            print(Fore.YELLOW + "No journal entries yet.")
+            return
+
+        for i, entry in enumerate(self.journal_entries, 1):
+            print(f"{i}. {entry}")
+
 tracker = MentalHealthTracker()
 
 def clear_screen():
@@ -53,7 +64,7 @@ def process_choice(choice):
         case 2:
             tracker.add_journal_entry()
         case 3:
-            pass
+            tracker.view_entries()
         case 4:
             pass
         case 5:
