@@ -5,6 +5,12 @@ EXIT_OPTION = 0
 
 init(autoreset = True)
 
+class MentalHealthTracker:
+    def __init__(self):
+        self.username = "Anonymous"
+        self.mood = "Neutral"
+        self.journal_entries = []
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
