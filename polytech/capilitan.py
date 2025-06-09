@@ -10,9 +10,11 @@ class StudentLifeManager:
         self.student_school = ""
         self.todo_list = []
         self.quotes = [
-            "Quote 1",
-            "Quote 2",
-            "Quote 3"
+            "Keep going, you're doing great!",
+            "Believe in yourself and all that you are.",
+            "Every day is a new beginning.",
+            "Push yourself, because no one else will.",
+            "Success comes from daily efforts."
         ]
 
     def view_profile(self):
@@ -23,22 +25,32 @@ class StudentLifeManager:
 
     def add_task(self):
         task = input(Fore.CYAN + "Enter a task to add: ").strip()
-        print(Fore.MAGENTA + Style.BRIGHT + f"Task '{task}' added!\n")
+        if task:
+            self.todo_list.append(task)
+            print(Fore.MAGENTA + Style.BRIGHT + f"Task '{task}' added!\n")
+        else:
+            print("No task entered.\n")
 
     def view_tasks(self):
         print(Fore.YELLOW + Style.BRIGHT + "\n--- Your To-Do List ---")
-        print("(Task list goes here)\n")
+        if not self.todo_list:
+            print("You have no tasks yet.\n")
+        else:
+            for idx, task in enumerate(self.todo_list, start=1):
+                print(f"{idx}. {task}")
+            print()
 
     def clear_tasks(self):
         confirm = input(Fore.CYAN + "Clear all tasks? (yes/no): ").lower()
         if confirm == 'yes':
+            self.todo_list.clear()
             print(Fore.MAGENTA + Style.BRIGHT + "All tasks cleared.\n")
         else:
             print("Cancelled.\n")
 
     def motivate_me(self):
         print(Fore.YELLOW + Style.BRIGHT + "\n--- Motivation ---")
-        print("(Random quote goes here)\n")
+        print(random.choice(self.quotes), "\n")
 
     def menu(self):
         print(Fore.YELLOW + Style.BRIGHT + 
