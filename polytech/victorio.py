@@ -41,18 +41,24 @@ class MentalHealthTracker:
         for i, entry in enumerate(self.journal_entries, 1):
             print(f"{i}. {entry}")
 
-    def clear_entries(self):
+    def delete_entry(self):
         print(Fore.MAGENTA + "=" * 55)
-        print(" \tClear All Journal Entries")
+        print(" \tDelete Journal Entry")
         print(Fore.MAGENTA + "=" * 55)
-        confirm = input(Fore.RED + "Are you sure you want to "
-                "clear all journal entries? (yes/no): ")
-        if confirm.lower() != "yes":
-            print(Fore.YELLOW + "Operation Canelled.")
+        
+        if not self.journal_entries:
+            print(Fore.YELLOW + "No entries to delete.")
             return
 
-        self.journal_entries.clear()
-        print(Fore.GREEN + "All journal entries cleared.")
+        for index, entry in enumerate(self.journal_entries, 1):
+            print(f"{index}. {entry}")
+
+        try:
+            choice = int(input(Fore.RED + "Enter entry number to delete: "))
+            removed_entry = self.journal_entries.pop(choice - 1)
+            print(Fore.GREEN + f"Deleted: {removed_entry}")
+        except:
+            print(Fore.RED + "Invalid input or number.")
 
     def show_Summary(self):
         print(Fore.MAGENTA + "=" * 55)
@@ -74,7 +80,7 @@ def display_menu():
     print("[1.]" + Fore.MAGENTA + " Add Mood")
     print("[2.]" + Fore.MAGENTA + " Write Journal Entry")
     print("[3.]" + Fore.MAGENTA + " View Journal Entries")
-    print("[4.]" + Fore.MAGENTA + " Clear Journal Entries")
+    print("[4.]" + Fore.MAGENTA + " Delete an Entry")
     print("[5.]" + Fore.MAGENTA + " Show Summary")
     print("[0.]" + Fore.MAGENTA + " Back to Main Menu")
     print(Fore.MAGENTA + "=" * 55)
@@ -89,7 +95,7 @@ def process_choice(choice):
         case 3:
             tracker.view_entries()
         case 4:
-            tracker.clear_entries()
+            tracker.delete_entry()
         case 5:
             tracker.show_Summary()
         case _:
