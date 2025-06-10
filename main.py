@@ -1,18 +1,20 @@
 import os
 from colorama import init, Fore, Style, Back
-from polytech import raquem 
+from polytech import raquem
 
 init(autoreset=True)
 
 EXIT_OPTION = 6
 UNSET_OPTION = -1
 DISPLAY_WIDTH = 28
-MENU_TITLE = "Polytech Menu System"
+MENU_TITLE = "PolyTech Menu System"
+MIN_OPTION = 1
+MAX_OPTION = 5
 
 MENU_OPTIONS = {
     1: "Annie Rose S. Raquem",
     2: "Option 2",
-    3: "Option 3", 
+    3: "Option 3",
     4: "Option 4",
     5: "Option 5",
     6: "Exit"
@@ -30,23 +32,19 @@ def center_text(text, width):
     
     return ' ' * left_padding + text + ' ' * right_padding
 
-def header():
+def display_header():
     print(Back.YELLOW + " " * DISPLAY_WIDTH)
-    
     centered_title = center_text(MENU_TITLE, DISPLAY_WIDTH - 2)
-    
-    print(Back.YELLOW + " " + 
-          Back.RESET + 
-          Fore.YELLOW + Style.BRIGHT + centered_title +
-          Back.YELLOW + " " +
-          Back.RESET
+    print(
+        Back.YELLOW + " " + Back.RESET +
+        Fore.YELLOW + Style.BRIGHT + centered_title +
+        Back.YELLOW + " " + Back.RESET
     )
-    
     print(Fore.YELLOW + "=" * DISPLAY_WIDTH)
     print(Back.YELLOW + " " * DISPLAY_WIDTH)
 
 def display_menu():
-    header()
+    display_header()
     
     for key in sorted(MENU_OPTIONS):
         menu_text = f"{key}. {MENU_OPTIONS[key]}"
@@ -77,8 +75,7 @@ def get_user_choice():
 def exit_program():
     print(
         Back.RED + Fore.YELLOW + " EXITING PROGRAM " +
-        Back.RESET + Fore.YELLOW +
-        " Thank you for using the system."
+        Back.RESET + Fore.YELLOW + " Thank you for using the system."
     )
 
 def handle_invalid_choice():
@@ -89,12 +86,12 @@ def handle_invalid_choice():
     )
 
 def display_get_choice(choice):
-    if 1 <= choice <= 5:
+    if MIN_OPTION <= choice <= MAX_OPTION:
         clear_screen()
-        
+    
     match choice:
         case 1:
-            raquem.Pet.menu()
+            raquem.Pet.menu()  # Call the class method directly
         case 2:
             # TODO(Victorio) Put your module here.
             pass
@@ -115,15 +112,17 @@ def main():
         clear_screen()
         display_menu()
         choice = get_user_choice()
-
+        
         if choice == EXIT_OPTION:
             exit_program()
             break
-        elif 1 <= choice <= 5:
-            display_get_choice(choice)
-            input(Fore.YELLOW + Style.BRIGHT + "Press Enter to continue...")
-        else:
+            
+        if choice < MIN_OPTION or choice > MAX_OPTION:
             handle_invalid_choice()
             input(Fore.YELLOW + Style.BRIGHT + "Press Enter to continue...")
+            continue
+            
+        display_get_choice(choice)
+        input(Fore.YELLOW + Style.BRIGHT + "Press Enter to continue...")
 
 main()

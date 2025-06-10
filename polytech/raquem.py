@@ -5,7 +5,6 @@ init(autoreset=True)
 
 EXIT_OPTION = 0
 class Pet:
-  
     SPECIES_AVAILABILITY = {
         "Dog": 5,
         "Cat": 3,
@@ -13,11 +12,10 @@ class Pet:
         "Fish": 4
     }
     
-    def __init__(self, name="", species="", age=0, favorite_toy=""):
+    def __init__(self, name="", species="", age=0):
         self.name = name
         self.species = species
         self.age = age
-        self.favorite_toy = favorite_toy
 
     @property
     def name(self):
@@ -43,18 +41,13 @@ class Pet:
     def age(self, value):
         self._age = max(0, int(value))
 
-    @property
-    def favorite_toy(self):
-        return self._favorite_toy
-
-    @favorite_toy.setter
-    def favorite_toy(self, value):
-        self._favorite_toy = value.strip().title() if value else ""
-
     def display_species_availability(self):
         print(Fore.YELLOW + "====== Species Availability ======" + Fore.RESET)
-        for species, count in self.SPECIES_AVAILABILITY.items():
-            print(f"{species}: {count} available")
+
+        for number, (species, count) in enumerate(
+            self.SPECIES_AVAILABILITY.items(), start=1
+        ):
+            print(f"{number}. {species}: {count} available")
 
     def choose_species(self):
         self.display_species_availability()
@@ -67,42 +60,45 @@ class Pet:
                     Fore.RESET
                 )
             )
-
-            species_list = list(self.SPECIES_AVAILABILITY.keys())
-
-            if 1 <= choice <= len(species_list):
-                selected_species = species_list[choice - 1]
-                if self.SPECIES_AVAILABILITY[selected_species] > 0:
-                    self.species = selected_species
-                    self.SPECIES_AVAILABILITY[selected_species] -= 1
-                    print(
-                        Fore.GREEN +
-                        f"{self.species} selected! Remaining: "
-                        f"{self.SPECIES_AVAILABILITY[self.species]}"
-                        + Fore.RESET
-                    )
-                else:
-                    print(
-                        Fore.RED +
-                        f"Sorry, {selected_species} is out of stock."
-                        + Fore.RESET
-                    )
-            else:
-                print(
-                    Fore.RED +
-                    "Invalid selection. Please try again."
-                    + Fore.RESET
-                )
-
         except ValueError:
             print(
                 Fore.RED +
-                "Invalid input. Please enter a number."
-                + Fore.RESET
+                "Invalid input. Please enter a number." +
+                Fore.RESET
             )
+            return
+
+        species_list = list(self.SPECIES_AVAILABILITY.keys())
+
+        if choice < 1 or choice > len(species_list):
+            print(
+                Fore.RED +
+                "Invalid selection. Please try again." +
+                Fore.RESET
+            )
+            return
+
+        selected_species = species_list[choice - 1]
+        available_count = self.SPECIES_AVAILABILITY[selected_species]
+
+        if available_count <= 0:
+            print(
+                Fore.RED +
+                f"Sorry, {selected_species} is out of stock." +
+                Fore.RESET
+            )
+            return
+
+        self.species = selected_species
+        self.SPECIES_AVAILABILITY[selected_species] -= 1
+        print(
+            Fore.GREEN +
+            f"{self.species} selected! Remaining: "
+            f"{self.SPECIES_AVAILABILITY[self.species]}"
+            + Fore.RESET
+        )
 
     def set_name(self):
-        """Prompt user to set the pet's name."""
         self.name = input(
             Fore.YELLOW + f"Enter your {self.species}'s name: " + Fore.RESET
         )
@@ -122,88 +118,94 @@ class Pet:
                 + Fore.RESET
             )
 
-    def set_favorite_toy(self):
-        self.favorite_toy = input(
-            Fore.YELLOW + "Enter your pet's favorite toy: " + Fore.RESET
-        )
-        print(
-            Fore.GREEN +
-            f"Favorite toy set to {self.favorite_toy}."
-            + Fore.RESET
-        )
-
     def display_details(self):
         print(Fore.YELLOW + "====== Pet Details ======" + Fore.RESET)
         print(f"Name         : {self.name}")
         print(f"Species      : {self.species}")
         print(f"Age          : {self.age}")
-        print(f"Favorite Toy : {self.favorite_toy}")
 
-        if self.species:
+    def play_with_pet(self):
+        if not self.name or not self.species:
+            print(Fore.RED + "You need to create a pet first!" + Fore.RESET)
+            return
+
+        print(Fore.YELLOW + f"=== Playing with {self.name} ===" + Fore.RESET)
+        play_options = {
+            "Dog": ["fetch", "tug-of-war", "hide and seek"],
+            "Cat": ["laser pointer", "feather toy", "catnip mouse"],
+            "Bird": ["mirror play", "swing", "puzzle toys"],
+            "Fish": ["follow your finger", "decorations", "bubbles"]
+        }
+
+        activities = play_options.get(self.species)
+        if not activities:
             print(
-                Fore.YELLOW +
-                "\n====== Species-Specific Info ======"
-                + Fore.RESET
+                Fore.RED +
+                f"No play activities for {self.species} yet." +
+                Fore.RESET
             )
-            if self.species == "Dog":
-                print("Dogs are loyal companions that need regular walks")
-                print(
-                    "Recommended vaccinations: "
-                    "Rabies, Distemper, Parvovirus"
-                )
-                print("Lifespan: 10-13 years")
-            elif self.species == "Cat":
-                print(
-                    "Cats are independent pets that enjoy climbing "
-                    "and exploring"
-                )
-                print("Recommended vaccinations: Rabies, FVRCP")
-                print("Lifespan: 12-15 years")
-            elif self.species == "Bird":
-                print(
-                    "Birds need spacious cages and social interaction"
-                )
-                print("Diet: Seeds, fruits, and vegetables")
-                print("Lifespan varies greatly by species")
-            elif self.species == "Fish":
-                print(
-                    "Fish need clean water and proper temperature control"
-                )
-                print("Regular tank maintenance is essential")
-                print("Lifespan varies by species")
+            return
+
+        print(f"Choose an activity to do with {self.name}:")
+        for idx, activity in enumerate(activities, 1):
+            print(f"{idx}. {activity}")
+
+        try:
+            choice = int(
+                input(Fore.YELLOW + "Select activity: " + Fore.RESET)
+            )
+        except ValueError:
+            print(Fore.RED + "Please enter a number." + Fore.RESET)
+            return
+
+        if 1 <= choice <= len(activities):
+            selected = activities[choice - 1]
+            print(
+                Fore.GREEN +
+                f"You played {selected} with {self.name}!" +
+                Fore.RESET
+            )
+            print(f"{self.name} looks happy!")
+        else:
+            print(Fore.RED + "Invalid selection." + Fore.RESET)
 
     def display_menu(self):
         print(Fore.YELLOW + "\n===== Pet Menu =====" + Fore.RESET)
         print("1. Choose Species")
         print("2. Set Name")
         print("3. Set Age")
-        print("4. Set Favorite Toy")
-        print("5. Display Pet Details")
+        print("4. Display Pet Details")
+        print("5. Play with Pet")
         print("0. Exit to Main Menu")
+
+    @staticmethod
+    def clear_screen():
+        os.system('cls' if os.name == 'nt' else 'clear')
 
     @classmethod
     def menu(cls):
-        pet_instance = cls()
+        pet = cls()
         
         choice = -1
         while choice != EXIT_OPTION:
-            pet_instance.display_menu()
+            pet.clear_screen() 
+            pet.display_menu()
             try:
                 choice = int(
                     input(Fore.YELLOW + "Enter your choice: " + Fore.RESET)
                 )
-                os.system('cls' if os.name == 'nt' else 'clear')
+                pet.clear_screen()  
                 match choice:
                     case 1:
-                        pet_instance.choose_species()
+                        pet.choose_species()
                     case 2:
-                        pet_instance.set_name()
+                        pet.set_name()
                     case 3:
-                        pet_instance.set_age()
+                        pet.set_age()
                     case 4:
-                        pet_instance.set_favorite_toy()
+                        pet.display_details()
                     case 5:
-                        pet_instance.display_details()
+                        pet.play_with_pet()
                     case 0:
                         print(
                             Fore.GREEN +
@@ -222,8 +224,9 @@ class Pet:
                     "Press Enter to continue..." +
                     Fore.RESET
                 )
-                os.system('cls' if os.name == 'nt' else 'clear')
+               
             except ValueError:
+                pet.clear_screen() 
                 print(
                     Fore.RED +
                     "Invalid input. Please enter a number."
